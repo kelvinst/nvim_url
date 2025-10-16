@@ -1,0 +1,12 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build artifacts
+dist/
+build/
+*.dmg
+
+# Temporary files
+*.log
