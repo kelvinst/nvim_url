@@ -36,7 +36,7 @@ When you click a `nvim://` link or open such a URL:
 ### Method 2: Homebrew Cask
 
 ```bash
-brew install --cask nvim-url-handler
+brew install --cask nvim_url
 ```
 
 ### Method 3: Build from Source
