@@ -230,3 +230,9 @@ MIT License - See LICENSE file for details
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Acknowledgements
+
+Thanks @nickgnd for heavily inspiring this project with his 
+[blog post](https://nickgnd.com/posts/2025/09/15/nvim-url-handler.html) doing
+the same for TMUX and Allactritty. 
