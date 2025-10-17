@@ -23,6 +23,11 @@ mkdir -p build/nvim_url.app
 echo -e "${YELLOW}Copying app contents...${NC}"
 cp -R Contents build/nvim_url.app/
 
+# Compile the AppleScript
+echo -e "${YELLOW}Compiling AppleScript...${NC}"
+mkdir -p build/nvim_url.app/Contents/Resources/Scripts
+osacompile -o build/nvim_url.app/Contents/Resources/Scripts/main.scpt main.applescript
+
 # Ensure the bash script is executable
 chmod +x build/nvim_url.app/Contents/Resources/nvim_url.sh
 chmod +x build/nvim_url.app/Contents/MacOS/applet
