@@ -193,6 +193,7 @@ To create and publish a new release:
    ```bash
    git add .
    git commit -m "chore: bump version to X.Y.Z"
+   git push origin main
    ```
 
 3. **Create and push a tag**:
