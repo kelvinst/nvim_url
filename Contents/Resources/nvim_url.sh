@@ -132,7 +132,11 @@ if [ -n "$full" ]; then
 
   # Split file and line
   file="${full_decoded%%:*}"
-  line="${full_decoded##*:}"
+  if [[ "$full_decoded" == *:* ]]; then
+    line="${full_decoded##*:}"
+  else
+    line=""
+  fi
 
   echo "  Parsed file: $file"
   echo "  Parsed line: $line"
@@ -154,7 +158,9 @@ if [ -n "$full" ]; then
     echo "Adding new tab to existing nvim instance at socket: $nvim_socket"
 
     nvim --server "$nvim_socket" --remote-tab "$file"
-    nvim --server "$nvim_socket" --remote-send "${line}G"
+    if [ -n "$line" ]; then
+      nvim --server "$nvim_socket" --remote-send "${line}G"
+    fi
 
     focus_nvim_window $nvim_socket
 
@@ -169,7 +175,11 @@ if [ -n "$full" ]; then
   if [ -n "$kitty_socket" ]; then
     echo "Adding new tab to existing kitty instance at socket: $kitty_socket"
 
-    wid=$(kitten @ launch --to="unix:$kitty_socket" --copy-env --type=tab nvim +"${line}" "$file")
+    if [ -n "$line" ]; then
+      wid=$(kitten @ launch --to="unix:$kitty_socket" --copy-env --type=tab nvim +"${line}" "$file")
+    else
+      wid=$(kitten @ launch --to="unix:$kitty_socket" --copy-env --type=tab nvim "$file")
+    fi
 
     kitten @ focus-window --to="unix:$kitty_socket" --match=id:"$wid"
 
@@ -179,5 +189,10 @@ if [ -n "$full" ]; then
   # Final fallback: open a new kitty instance
   echo "No existing kitty instance found, opening a new one"
 
-  kitty --single-instance nvim +"${line}" "$file"
+  if [ -n "$line" ]; then
+    kitty --single-instance nvim +"${line}" "$file"
+  else
+    kitty --single-instance nvim "$file"
+  fi
 fi
+
