@@ -40,13 +40,7 @@ Neovim instances
 macOS Gatekeeper)
 4. The app will now handle all `nvim://` URLs
 
-### Method 2: Homebrew Cask
-
-```bash
-brew install --cask nvim_url
-```
-
-### Method 3: Build from Source
+### Method 2: Build from Source
 
 1. Clone this repository:
    ```bash
