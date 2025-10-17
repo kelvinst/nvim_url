@@ -173,6 +173,62 @@ To create a distributable DMG:
 ./package-dmg.sh
 ```
 
+### Releasing a New Version
+
+To create and publish a new release:
+
+1. **Update the version** in `Contents/Info.plist`:
+   ```xml
+    <!-- Edit CFBundleShortVersionString -->
+	<key>CFBundleShortVersionString</key>
+	<string>X.Y.Z</string>
+   ```
+
+1. Update the version in `Makefile`:
+   ```make
+   # Update the VERSION variable
+   VERSION := X.Y.Z
+   ```
+2. **Commit the version change**:
+   ```bash
+   git add .
+   git commit -m "chore: bump version to X.Y.Z"
+   ```
+
+3. **Create and push a tag**:
+   ```bash
+   git tag vX.Y.Z
+   git push origin main --tags
+   ```
+
+4. **Build the DMG**:
+   ```bash
+   make dmg
+   ```
+
+5. **Generate release notes** (list commits since last tag):
+   ```bash
+   # Get the previous tag
+   PREV_TAG=$(git describe --tags --abbrev=0 HEAD^)
+
+   # Generate commit list
+   git log ${PREV_TAG}..HEAD --pretty=format:"- %s" --reverse
+   ```
+
+6. **Create a GitHub release in [GitHub](https://github.com/kelvinst/nvim_url/releases/new)** with the following format:
+   ```markdown
+   ## [X.Y.Z] - YYYY-MM-DD
+
+   <!-- Some short description of the release -->
+
+   ### Changelog
+
+   <!-- The commits you generated in the previous step -->
+   ```
+
+7. **Upload the DMG** from `dist/nvim_url-X.Y.Z.dmg` to the release
+8. **Publish the release**
+
 ## License
 
 MIT License - See LICENSE file for details
