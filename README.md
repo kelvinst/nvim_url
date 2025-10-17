@@ -160,7 +160,7 @@ If clicking `nvim://` URLs doesn't work:
 Run the build script to compile the app:
 
 ```bash
-./build.sh
+make build
 ```
 
 ### Creating a DMG
@@ -168,7 +168,7 @@ Run the build script to compile the app:
 To create a distributable DMG:
 
 ```bash
-./package-dmg.sh
+make dmg
 ```
 
 ### Releasing a New Version
