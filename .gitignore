@@ -7,6 +7,7 @@
 dist/
 build/
 *.dmg
+*.scpt
 
 # Temporary files
 *.log
