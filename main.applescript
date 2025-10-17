@@ -33,3 +33,28 @@ on open location schemeUrl
 	-- Restore original delimiters
 	set AppleScript's text item delimiters to oldDelims
 end open location
+
+on open theFiles
+	-- Handle "Open With..." from Finder
+	try
+		-- Get the script path from the app bundle's Resources
+		set scriptAlias to (path to resource "nvim_url.sh")
+		set scriptPath to POSIX path of scriptAlias
+
+		-- Ensure the script is executable
+		try
+			do shell script "/bin/chmod +x " & quoted form of scriptPath
+		end try
+
+		-- Process each file
+		repeat with aFile in theFiles
+			set filePath to POSIX path of aFile
+			-- Pass file path to the bash script
+			do shell script "/bin/bash -lc " & quoted form of (quoted form of scriptPath & " " & quoted form of filePath & " >/dev/null 2>&1 &")
+		end repeat
+
+	on error errMsg
+		display alert "Error opening file: " & errMsg
+	end try
+end open
+
