@@ -75,7 +75,7 @@ install: build
 	@echo "    $(BLUE)open 'nvim://file/$(CURDIR)/README.md:10'$(NC)"
 	@echo ""
 
-package-dmg: build
+dmg: build
 	@echo "$(GREEN)Packaging $(APP_NAME) into DMG...$(NC)"
 
 	@if [ ! -d "$(APP_BUNDLE)" ]; then \
