@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>applet</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.apple.ScriptEditor.id.Neovim-URL-Handler</string>
+	<string>com.stinghen.kelvin.nvim_url</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -101,4 +101,5 @@
 	</dict>
 </dict>
 </plist>
+
 
