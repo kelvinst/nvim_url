@@ -24,7 +24,7 @@ echo -e "${YELLOW}Copying app contents...${NC}"
 cp -R Contents build/nvim_url.app/
 
 # Ensure the bash script is executable
-chmod +x build/nvim_url.app/Contents/Resources/nvim_url_handler.sh
+chmod +x build/nvim_url.app/Contents/Resources/nvim_url.sh
 chmod +x build/nvim_url.app/Contents/MacOS/applet
 
 # Remove code signature (it will be invalid after copying)

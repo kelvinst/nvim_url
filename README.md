@@ -16,7 +16,7 @@ When you click a `nvim://` link or open such a URL:
 
 1. The AppleScript handler receives the URL
 2. It extracts the file path and optional line number
-3. The bash script (`nvim_url_handler.sh`) analyzes all running kitty terminals and Neovim instances
+3. The bash script (`nvim_url.sh`) analyzes all running kitty terminals and Neovim instances
 4. It selects the best match based on:
    - Neovim instances with matching working directories
    - Kitty terminals with matching working directories
@@ -97,26 +97,28 @@ open "nvim://file/~/.zshrc:1"
 
 ### Neovim Configuration
 
-For the handler to connect to existing Neovim instances, you need to start Neovim with a socket:
+For the handler to connect to existing Neovim instances, you need to start
+Neovim listening to a socket:
 
 ```bash
-nvim --listen /tmp/nvim-$$.sock
+nvim --listen /tmp/nvim-$(date +%s%N)
 ```
 
-Or configure your shell to always start Neovim with a listener. Add to your `.zshrc` or `.bashrc`:
+Or configure your shell to always start Neovim with a listener. Add to your
+`.zshrc` or `.bashrc`:
 
 ```bash
-alias nvim='nvim --listen /tmp/nvim-$$.sock'
+alias nvim='nvim --listen /tmp/nvim-$(date +%s%N)'
 ```
 
 ## Troubleshooting
 
 ### Logs
 
-The handler writes logs to `/tmp/nvim_url_handler.log`. Check this file if URLs aren't working as expected:
+The handler writes logs to `/tmp/nvim_url.log`. Check this file if URLs aren't working as expected:
 
 ```bash
-tail -f /tmp/nvim_url_handler.log
+tail -f /tmp/nvim_url.log
 ```
 
 ### Permissions
@@ -144,7 +146,7 @@ If clicking `nvim://` URLs doesn't work:
 │   ├── Resources/
 │   │   ├── Scripts/
 │   │   │   └── main.scpt       # AppleScript URL handler
-│   │   └── nvim_url_handler.sh # Bash script for routing logic
+│   │   └── nvim_url.sh # Bash script for routing logic
 │   └── _CodeSignature/
 ├── build.sh                     # Build script
 ├── package-dmg.sh              # DMG packaging script

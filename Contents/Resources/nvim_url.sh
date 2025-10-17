@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Outptu all output to a log file for debugging
-exec >> /tmp/nvim_url_handler.log 2>&1
+exec >> /tmp/nvim_url.log 2>&1
 
 PATH="/Applications/kitty.app/Contents/MacOS:/opt/homebrew/bin:$PATH"
 
