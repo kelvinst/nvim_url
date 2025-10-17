@@ -50,15 +50,13 @@ macOS Gatekeeper)
 
 2. Build the app:
    ```bash
-   ./build.sh
+   make install
    ```
 
-3. Install to Applications:
+4. Open a `nvim://` URL to register the app as a handler:
    ```bash
-   cp -R build/nvim_url.app /Applications/
+   open 'nvim://file/~/.zshrc'
    ```
-
-4. Open the app once to register the URL handler
 
 ## Usage
 
@@ -207,15 +205,6 @@ To create and publish a new release:
    make dmg
    ```
 
-5. **Generate release notes** (list commits since last tag):
-   ```bash
-   # Get the previous tag
-   PREV_TAG=$(git describe --tags --abbrev=0 HEAD^)
-
-   # Generate commit list
-   git log ${PREV_TAG}..HEAD --pretty=format:"- %s" --reverse
-   ```
-
 6. **Create a GitHub release in [GitHub](https://github.com/kelvinst/nvim_url/releases/new)** with the following format:
    ```markdown
    ## [X.Y.Z] - YYYY-MM-DD
@@ -225,7 +214,11 @@ To create and publish a new release:
    ### Changelog
 
    <!-- The commits you generated in the previous step -->
+
+   **Full Changelog**: https://github.com/kelvinst/nvim_url/compare/vA.B.C...vX.Y.Z
    ```
+
+   P.S.: You can generate the **Full Changelog** using the `Generate release notes` button on GitHub, you just have to select the current and previous tags.
 
 7. **Upload the DMG** from `dist/nvim_url-X.Y.Z.dmg` to the release
 8. **Publish the release**
