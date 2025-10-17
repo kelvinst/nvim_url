@@ -28,8 +28,8 @@ When you click a `nvim://` link or open such a URL:
 
 ### Method 1: Download DMG (Recommended)
 
-1. Download the latest `.dmg` file from the [Releases](https://github.com/YOUR_USERNAME/nvim_url.app/releases) page
-2. Open the DMG and drag `nvim_url.app` to your Applications folder
+1. Download the latest `.dmg` file from the [Releases](https://github.com/kelvinst/nvim_url/releases) page
+2. Open the DMG and drag `nvim_url` to your Applications folder
 3. Right-click the app and select "Open" (required for first launch due to macOS Gatekeeper)
 4. The app will now handle all `nvim://` URLs
 
@@ -43,8 +43,8 @@ brew install --cask nvim-url-handler
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/nvim_url.app.git
-   cd nvim_url.app
+   git clone https://github.com/kelvinst/nvim_url.git
+   cd nvim_url
    ```
 
 2. Build the app:

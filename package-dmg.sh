@@ -62,7 +62,7 @@ Example:
   nvim://file/~/.zshrc:1
 
 For more information, visit:
-  https://github.com/YOUR_USERNAME/nvim_url.app
+  https://github.com/kelvinst/nvim_url
 
 Requirements:
 - kitty terminal
