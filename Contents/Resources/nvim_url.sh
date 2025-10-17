@@ -121,6 +121,8 @@ focus_nvim_window() {
 full="$1"
 
 if [ -n "$full" ]; then
+  echo "Received file name: $full"
+
   # URL-decode if needed (keeps working even if python3 is missing)
   urldecode() {
     local data="${1//+/ }"   # convert + to space
@@ -132,13 +134,20 @@ if [ -n "$full" ]; then
   file="${full_decoded%%:*}"
   line="${full_decoded##*:}"
 
+  echo "  Parsed file: $file"
+  echo "  Parsed line: $line"
+
   # Expand leading "~" to $HOME (tilde won't expand in quotes)
   if [[ "$file" == "~"* ]]; then
     file="${file/#\~/$HOME}"
   fi
 
+  echo "  Expanded file: $file"
+
   # Find an existing nvim socket
   nvim_socket=$(best_nvim_socket "$file")
+
+  echo "Neovim socket: $nvim_socket"
 
   # If nvim socket found, open a new tab in that instance
   if [ -n "$nvim_socket" ]; then
@@ -153,6 +162,8 @@ if [ -n "$full" ]; then
   fi
 
   kitty_socket=$(best_kitty_socket "$file")
+
+  echo "Kitty socket: $kitty_socket"
 
   # If kitty socket found, open a new tab in that instance
   if [ -n "$kitty_socket" ]; then
