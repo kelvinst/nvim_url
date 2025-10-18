@@ -111,8 +111,9 @@ install-cli:
 	fi
 
 	echo "  Creating symlink at $(BLUE)$(CLI_INSTALL_PATH)$(NC)"
-	ln -sf "$(CURDIR)/$(CLI_SOURCE)" "$(CLI_INSTALL_PATH)"
-	chmod +x "$(CLI_INSTALL_PATH)"
+	echo "  $(YELLOW)This requires administrator privileges$(NC)"
+	sudo ln -sf "$(CURDIR)/$(CLI_SOURCE)" "$(CLI_INSTALL_PATH)"
+	sudo chmod +x "$(CLI_INSTALL_PATH)"
 	echo ""
 
 	echo "  $(GREEN)Done!$(NC) You can now use: $(BLUE)nvim_url <file>$(NC)"
@@ -128,7 +129,8 @@ uninstall-cli:
 	echo ""
 	if [ -L "$(CLI_INSTALL_PATH)" ]; then \
 		echo "  Removing symlink at $(BLUE)$(CLI_INSTALL_PATH)$(NC)"; \
-		rm "$(CLI_INSTALL_PATH)"; \
+		echo "  $(YELLOW)This requires administrator privileges$(NC)"; \
+		sudo rm "$(CLI_INSTALL_PATH)"; \
 		\
 		echo ""; \
 		echo "  $(GREEN)Done!$(NC)"; \
@@ -187,4 +189,6 @@ dmg: build
 	echo "File size:"
 	ls -lh $(FINAL_DMG) | awk '{print "  " $$5}'
 	echo ""
+
+
 
