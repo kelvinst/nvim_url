@@ -1,4 +1,4 @@
-.PHONY: all build clean install dmg
+.PHONY: all build clean install uninstall install-cli uninstall-cli dmg
 .SILENT:
 
 # Colors for output
@@ -15,6 +15,10 @@ APP_BUNDLE := $(BUILD_DIR)/$(APP_NAME)
 CONTENTS_DIR := $(APP_BUNDLE)/Contents
 RESOURCES_DIR := $(CONTENTS_DIR)/Resources
 SCRIPTS_DIR := $(RESOURCES_DIR)/Scripts
+
+# CLI variables
+CLI_INSTALL_PATH := /usr/local/bin/nvim_url
+CLI_SOURCE := Contents/Resources/nvim_url.sh
 
 # DMG variables
 VERSION := 0.1.0
@@ -61,19 +65,76 @@ clean:
 		echo "$(YELLOW)Cleaning previous build...$(NC)"; \
 		echo "  Removing the build directory: $(YELLOW)$(BUILD_DIR)$(NC)"; \
 		rm -rf $(BUILD_DIR); \
+    \
 		echo ""; \
 		echo "  All cleaned up!"; \
 		echo ""; \
 	fi
 
-install: build
+install: uninstall build
 	echo "$(GREEN)Installing $(APP_NAME) to /Applications...$(NC)"
 	cp -R $(APP_BUNDLE) /Applications/
+
 	echo ""
 	echo "  Done! Installed to $(GREEN)/Applications/$(APP_NAME)$(NC)"
 	echo ""
 	echo "  Try it out by running, and it should open this project's README:"
 	echo "    $(BLUE)open 'nvim://file/$(CURDIR)/README.md:10'$(NC)"
+	echo ""
+	echo "  To install it as a CLI tool, run:"
+	echo "    $(BLUE)make install-cli$(NC)"
+	echo ""
+
+uninstall:
+	echo "$(YELLOW)Uninstalling $(APP_NAME) from /Applications...$(NC)"
+
+	echo ""
+	if [ -d "/Applications/$(APP_NAME)" ]; then \
+		echo "  Removing /Applications/$(APP_NAME)..."; \
+		rm -rf "/Applications/$(APP_NAME)"; \
+		\
+		echo ""; \
+		echo "  $(GREEN)Done!$(NC)"; \
+	else \
+		echo "  $(YELLOW)App not found in /Applications$(NC)"; \
+	fi
+	echo ""
+
+install-cli:
+	echo "$(GREEN)Installing nvim_url CLI...$(NC)"
+	echo ""
+
+	if [ ! -f "$(CLI_SOURCE)" ]; then \
+		echo "$(RED)Error: $(CLI_SOURCE) not found$(NC)"; \
+		echo "$(YELLOW)Make sure the source file exists$(NC)"; \
+		exit 1; \
+	fi
+
+	echo "  Creating symlink at $(BLUE)$(CLI_INSTALL_PATH)$(NC)"
+	ln -sf "$(CURDIR)/$(CLI_SOURCE)" "$(CLI_INSTALL_PATH)"
+	chmod +x "$(CLI_INSTALL_PATH)"
+	echo ""
+
+	echo "  $(GREEN)Done!$(NC) You can now use: $(BLUE)nvim_url <file>$(NC)"
+	echo ""
+	echo "  Examples:"
+	echo "    $(BLUE)nvim_url README.md$(NC)"
+	echo "    $(BLUE)nvim_url README.md:10$(NC)"
+	echo ""
+
+uninstall-cli:
+	echo "$(YELLOW)Uninstalling nvim_url CLI...$(NC)"
+
+	echo ""
+	if [ -L "$(CLI_INSTALL_PATH)" ]; then \
+		echo "  Removing symlink at $(BLUE)$(CLI_INSTALL_PATH)$(NC)"; \
+		rm "$(CLI_INSTALL_PATH)"; \
+		\
+		echo ""; \
+		echo "  $(GREEN)Done!$(NC)"; \
+	else \
+		echo "  $(YELLOW)CLI not found at $(CLI_INSTALL_PATH)$(NC)"; \
+	fi
 	echo ""
 
 dmg: build
