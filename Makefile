@@ -127,7 +127,3 @@ dmg: build
 	ls -lh $(FINAL_DMG) | awk '{print "  " $$5}'
 	echo ""
 
-
-
-
-
