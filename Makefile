@@ -100,7 +100,7 @@ uninstall:
 	fi
 	echo ""
 
-install-cli:
+install-cli: uninstall-cli install
 	echo "$(GREEN)Installing nvim_url CLI...$(NC)"
 	echo ""
 
