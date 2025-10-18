@@ -53,6 +53,7 @@
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
+				<string>public.text</string>
 				<string>public.unix-executable</string>
 				<string>public.shell-script</string>
 				<string>public.script</string>
