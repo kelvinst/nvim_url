@@ -17,7 +17,7 @@ RESOURCES_DIR := $(CONTENTS_DIR)/Resources
 SCRIPTS_DIR := $(RESOURCES_DIR)/Scripts
 
 # CLI variables
-CLI_INSTALL_PATH := /usr/local/bin/nvim_url
+CLI_INSTALL_PATH := $(HOME)/.local/bin/nvim_url
 CLI_SOURCE := Contents/Resources/nvim_url.sh
 
 # DMG variables
@@ -107,13 +107,18 @@ install-cli: uninstall-cli install
 		exit 1; \
 	fi
 
+	echo "  Creating directory $(BLUE)$(dir $(CLI_INSTALL_PATH))$(NC)"
+	mkdir -p "$(dir $(CLI_INSTALL_PATH))"
+
 	echo "  Creating symlink at $(BLUE)$(CLI_INSTALL_PATH)$(NC)"
-	echo "  $(YELLOW)This requires administrator privileges$(NC)"
-	sudo ln -sf "$(CURDIR)/$(CLI_SOURCE)" "$(CLI_INSTALL_PATH)"
-	sudo chmod +x "$(CLI_INSTALL_PATH)"
+	ln -sf "$(CURDIR)/$(CLI_SOURCE)" "$(CLI_INSTALL_PATH)"
+	chmod +x "$(CLI_INSTALL_PATH)"
 	echo ""
 
 	echo "  $(GREEN)Done!$(NC) You can now use: $(BLUE)nvim_url <file>$(NC)"
+	echo ""
+	echo "  Make sure $(BLUE)$(dir $(CLI_INSTALL_PATH))$(NC) is in your PATH:"
+	echo "    $(YELLOW)export PATH=\"\$$HOME/.local/bin:\$$PATH\"$(NC)"
 	echo ""
 	echo "  Examples:"
 	echo "    $(BLUE)nvim_url README.md$(NC)"
@@ -126,8 +131,7 @@ uninstall-cli:
 	echo ""
 	if [ -L "$(CLI_INSTALL_PATH)" ]; then \
 		echo "  Removing symlink at $(BLUE)$(CLI_INSTALL_PATH)$(NC)"; \
-		echo "  $(YELLOW)This requires administrator privileges$(NC)"; \
-		sudo rm "$(CLI_INSTALL_PATH)"; \
+		rm "$(CLI_INSTALL_PATH)"; \
 		\
 		echo ""; \
 		echo "  $(GREEN)Done!$(NC)"; \
@@ -186,6 +190,9 @@ dmg: build
 	echo "File size:"
 	ls -lh $(FINAL_DMG) | awk '{print "  " $$5}'
 	echo ""
+
+
+
 
 
 
