@@ -118,7 +118,29 @@ focus_nvim_window() {
 #
 # Example URL: 
 #   nvim://file/~/.zshrc:40
-full="$1"
+#
+# Also supports command-line usage with --line argument:
+#   nvim_url.sh /path/to/file.txt --line=42
+#
+# The lines specified in the URL argument takes precedence over the --line
+# argument.
+
+# Parse command-line arguments
+full=""
+line=""
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --line=*)
+      line="${1#*=}"
+      shift
+      ;;
+    *)
+      full="$1"
+      shift
+      ;;
+  esac
+done
 
 if [ -n "$full" ]; then
   echo "Received file name: $full"
@@ -130,12 +152,10 @@ if [ -n "$full" ]; then
   }
   full_decoded=$(urldecode "$full")
 
-  # Split file and line
+  # Split file and line (only if line wasn't provided via --line argument)
   file="${full_decoded%%:*}"
   if [[ "$full_decoded" == *:* ]]; then
     line="${full_decoded##*:}"
-  else
-    line=""
   fi
 
   echo "  Parsed file: $file"
@@ -195,4 +215,5 @@ if [ -n "$full" ]; then
     kitty --single-instance nvim "$file"
   fi
 fi
+
 
