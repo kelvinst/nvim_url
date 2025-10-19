@@ -1,7 +1,12 @@
 #!/bin/bash
 
-# Outptu all output to a log file for debugging
+# Send all output to a log file for debugging
 exec >> /tmp/nvim_url.log 2>&1
+
+echo ""
+echo "-------------------------------------------------------------------------"
+echo "nvim_url.sh invoked at $(date)"
+echo "Arguments: $*"
 
 PATH="/Applications/kitty.app/Contents/MacOS:/opt/homebrew/bin:$PATH"
 
