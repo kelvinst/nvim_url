@@ -63,7 +63,8 @@ on run argv
 end run
 
 on open theFiles
-	-- Handle "Open With..." from Finder
+	-- Handle "Open With..." from Finder or 
+  -- when files are passed via `open` cmd line
 	try
 		-- Get the script path from the app bundle's Resources
 		set scriptAlias to (path to resource "nvim_url.sh")
@@ -74,11 +75,44 @@ on open theFiles
 			do shell script "/bin/chmod +x " & quoted form of scriptPath
 		end try
 
+		-- Try to get command-line arguments from the process
+		set extraArgs to ""
+		try
+			-- Get our own process ID and command line
+			set myPid to do shell script "echo $$"
+			
+			-- Get the applet process command line (look for the applet binary, not the shell)
+			set cmdLine to do shell script "ps -p " & myPid & " -o command= 2>/dev/null || ps aux | grep -i 'Contents/MacOS/applet' | grep -v grep | head -1 | sed 's/^.*Contents\\/MacOS\\/applet/\\/Contents\\/MacOS\\/applet/' || echo ''"
+			
+			-- If that didn't work, try to find the applet process by name
+			if cmdLine is "" or cmdLine does not contain "applet" then
+				set cmdLine to do shell script "ps aux | grep -i 'Contents/MacOS/applet' | grep -v grep | head -1 | awk '{for(i=11;i<=NF;i++) printf \"%s \", $i; print \"\"}' || echo ''"
+			end if
+			
+			-- Extract arguments that come after the applet path
+			-- The format is: /path/to/applet [args...]
+			-- We want to extract everything after "applet "
+			if cmdLine contains "applet " then
+				set oldDelims to AppleScript's text item delimiters
+				set AppleScript's text item delimiters to "applet "
+				set cmdParts to text items of cmdLine
+				if (count of cmdParts) > 1 then
+					set argsString to item 2 of cmdParts
+					-- Clean up the args string
+					set argsString to do shell script "echo " & quoted form of argsString & " | xargs"
+					if argsString is not "" then
+						set extraArgs to " " & argsString
+					end if
+				end if
+				set AppleScript's text item delimiters to oldDelims
+			end if
+		end try
+
 		-- Process each file
 		repeat with aFile in theFiles
 			set filePath to POSIX path of aFile
-			-- Pass file path to the bash script
-			do shell script "/bin/bash -lc " & quoted form of (quoted form of scriptPath & " " & quoted form of filePath & " >/dev/null 2>&1 &")
+			-- Pass file path and any extra arguments to the bash script
+			do shell script "/bin/bash -lc " & quoted form of (quoted form of scriptPath & " " & quoted form of filePath & extraArgs & " >/dev/null 2>&1 &")
 		end repeat
 
 	on error errMsg
