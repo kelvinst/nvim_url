@@ -180,9 +180,10 @@ if [ -n "$full" ]; then
 
   # If nvim socket found, open a new tab in that instance
   if [ -n "$nvim_socket" ]; then
-    echo "Adding new tab to existing nvim instance at socket: $nvim_socket"
+    echo "Adding new buffer to existing nvim instance at socket: $nvim_socket"
 
-    nvim --server "$nvim_socket" --remote-tab "$file"
+    nvim --server "$nvim_socket" --remote "$file"
+
     if [ -n "$line" ]; then
       nvim --server "$nvim_socket" --remote-send "${line}G"
     fi
