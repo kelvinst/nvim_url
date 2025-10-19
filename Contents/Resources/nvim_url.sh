@@ -5,6 +5,12 @@ exec >> /tmp/nvim_url.log 2>&1
 
 PATH="/Applications/kitty.app/Contents/MacOS:/opt/homebrew/bin:$PATH"
 
+# URL-decode if needed (keeps working even if python3 is missing)
+urldecode() {
+  local data="${1//+/ }"   # convert + to space
+  printf '%b' "${data//%/\\x}"
+}
+
 # List all kitty sockets that are not quick-access and have windows
 list_kitty_sockets() {
   quick_access_pid=$(pgrep -x kitty-quick-access)
@@ -135,6 +141,10 @@ while [[ $# -gt 0 ]]; do
       line="${1#*=}"
       shift
       ;;
+    --line)
+      line="$2"
+      shift 2
+      ;;
     *)
       full="$1"
       shift
@@ -145,11 +155,6 @@ done
 if [ -n "$full" ]; then
   echo "Received file name: $full"
 
-  # URL-decode if needed (keeps working even if python3 is missing)
-  urldecode() {
-    local data="${1//+/ }"   # convert + to space
-    printf '%b' "${data//%/\\x}"
-  }
   full_decoded=$(urldecode "$full")
 
   # Split file and line (only if line wasn't provided via --line argument)
@@ -215,5 +220,6 @@ if [ -n "$full" ]; then
     kitty --single-instance nvim "$file"
   fi
 fi
+
 
 
