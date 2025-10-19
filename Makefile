@@ -28,7 +28,7 @@ DMG_TEMP := dmg_temp
 DIST_DIR := dist
 FINAL_DMG := $(DIST_DIR)/$(DMG_NAME).dmg
 
-all: install
+all: install-cli
 
 build: clean
 	echo "$(BLUE)Building $(APP_NAME)...$(NC)"
@@ -80,9 +80,6 @@ install: uninstall build
 	echo ""
 	echo "  Try it out by running, and it should open this project's README:"
 	echo "    $(BLUE)open 'nvim://file/$(CURDIR)/README.md:10'$(NC)"
-	echo ""
-	echo "  To install it as a CLI tool, run:"
-	echo "    $(BLUE)make install-cli$(NC)"
 	echo ""
 
 uninstall:
