@@ -34,6 +34,34 @@ on open location schemeUrl
 	set AppleScript's text item delimiters to oldDelims
 end open location
 
+on run argv
+	-- Handle command-line arguments when app is launched with args
+	if (count of argv) > 0 then
+		try
+			-- Get the script path from the app bundle's Resources
+			set scriptAlias to (path to resource "nvim_url.sh")
+			set scriptPath to POSIX path of scriptAlias
+
+			-- Ensure the script is executable
+			try
+				do shell script "/bin/chmod +x " & quoted form of scriptPath
+			end try
+
+			-- Build the command with all arguments
+			set cmdArgs to ""
+			repeat with arg in argv
+				set cmdArgs to cmdArgs & " " & quoted form of arg
+			end repeat
+
+			-- Pass all arguments to the bash script
+			do shell script "/bin/bash -lc " & quoted form of (quoted form of scriptPath & cmdArgs & " >/dev/null 2>&1 &")
+
+		on error errMsg
+			display alert "Error processing arguments: " & errMsg
+		end try
+	end if
+end run
+
 on open theFiles
 	-- Handle "Open With..." from Finder
 	try
